@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "com.mikolajkolek",
+    "id": "fix-alt-gr",
+    "version": "${version}",
+    "metadata": {
+      "name": "Fix Alt Gr",
+      "description": "A simple Minecraft mod that (mostly) fixes the MC-127862 bug, which sometimes makes pressing the Alt Gr key lock your left control key in a pressed state.",
+      "contributors": {
+        "Mikolaj_Kolek": "Owner"
+      },
+      "contact": {
+        "homepage": "https://github.com/MikolajKolek/fix-alt-gr",
+        "issues": "https://github.com/MikolajKolek/fix-alt-gr/issues",
+        "sources": "https://github.com/MikolajKolek/fix-alt-gr"
+      },
+      "icon": "assets/fixaltgr/icon.png",
+      "license": "MIT"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "versions": ">=0.17.0-"
+      },
+      {
+        "id": "minecraft",
+        "versions": ">=1.19"
+      }
+    ]
+  },
+  "mixin": "fixaltgr.mixins.json"
+}

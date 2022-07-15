@@ -1,7 +1,7 @@
-package games.mikolajkolek.fixaltgr.mixin;
+package com.mikolajkolek.fixaltgr.mixin;
 
-import games.mikolajkolek.fixaltgr.FixAltGr;
-import net.minecraft.client.util.InputUtil;
+import com.mikolajkolek.fixaltgr.FixAltGr;
+import com.mojang.blaze3d.platform.InputUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,23 +14,18 @@ public class InputUtilMixin {
     private static void isKeyPressed(long handle, int code, CallbackInfoReturnable<Boolean> cir) {
         if(code != 341) return;
 
-        if(!FixAltGr.listener.controlKeyPressed || FixAltGr.listener.altKeyPressed) {
-            //FixAltGr.LOGGER.info("Corrected bug");
+        if(!FixAltGr.listener.controlKeyPressed || FixAltGr.listener.altKeyPressed)
             cir.setReturnValue(false);
-        }
         else {
-            //FixAltGr.LOGGER.info("Sleeping to possibly correct bug");
-
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
-            } catch (InterruptedException e) {
-                FixAltGr.LOGGER.error("The chat keyPressed sleep was interrupted!");
+            }
+			catch (InterruptedException e) {
+                FixAltGr.LOGGER.error("The isKeyPressed sleep was interrupted!");
             }
 
-            if (!FixAltGr.listener.controlKeyPressed || FixAltGr.listener.altKeyPressed) {
-                //FixAltGr.LOGGER.info("Corrected bug");
+            if (!FixAltGr.listener.controlKeyPressed || FixAltGr.listener.altKeyPressed)
                 cir.setReturnValue(false);
-            }
             else
                 cir.setReturnValue(true);
         }
