@@ -22,6 +22,7 @@ public class FixAltGr {
 			System.exit(1);
 		}
 
+		GlobalScreen.addNativeKeyListener(listener);
 		LOGGER.info("Registered native key listener");
 	}
 }
