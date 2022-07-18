@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "games.mikolajkolek.fixaltgr.FixAltGr"
+      "com.mikolajkolek.fixaltgr.FixAltGr"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "fixaltgr.mixins.json"
   ],
 
   "depends": {

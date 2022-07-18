@@ -1,4 +1,4 @@
-package games.mikolajkolek.fixaltgr;
+package com.mikolajkolek.fixaltgr;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -16,8 +16,8 @@ public class FixAltGr implements ModInitializer {
 			GlobalScreen.registerNativeHook();
 		}
 		catch (NativeHookException ex) {
-			System.err.println("There was a problem registering the native hook.");
-			System.err.println(ex.getMessage());
+			LOGGER.error("There was a problem registering the native hook.");
+			LOGGER.error(ex.getMessage());
 
 			System.exit(1);
 		}
