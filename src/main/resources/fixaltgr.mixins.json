@@ -4,7 +4,7 @@
   "package": "com.mikolajkolek.fixaltgr.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "BootstrapMixin",
+    "MinecraftClientMixin",
     "InputUtilMixin"
   ],
   "injectors": {
