@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -42,19 +42,19 @@ public class FixAltGrLibraryLocator implements NativeLibraryLocator {
 				NativeSystem.getFamily().toString().toLowerCase() +
 				'/' + libNativeArch + '/' + libNativeName;
 
-		URL classLocation;
+		String classLocation;
 		if(QuiltLoader.isDevelopmentEnvironment())
-			classLocation = GlobalScreen.class.getProtectionDomain().getCodeSource().getLocation();
+			classLocation = GlobalScreen.class.getProtectionDomain().getCodeSource().getLocation().toString();
 		else
-			classLocation = FixAltGr.class.getProtectionDomain().getCodeSource().getLocation();
+			classLocation = QuiltLoader.getModContainer(FixAltGr.MODID).get().getSourcePaths().get(0).get(0).toString();
 
 		File classFile;
 		try {
-			classFile = new File(classLocation.toURI());
+			classFile = new File(new URI(classLocation));
 		}
 		catch (URISyntaxException e) {
 			FixAltGr.LOGGER.warn(e.getMessage());
-			classFile = new File(classLocation.getPath());
+			classFile = new File(classLocation);
 		}
 
 		File libFile;
