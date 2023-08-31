@@ -1,8 +1,8 @@
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.19.3"
-quilt_mappings = "1.19.3+build.23"
-quilt_loader = "0.18.3-pre.2"
+minecraft = "1.20"
+quilt_mappings = "1.20+build.1"
+quilt_loader = "0.19.0-beta.18"
 
 # Dependencies
 jnativehook = "2.2.2"
@@ -13,4 +13,4 @@ quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_m
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
+quilt_loom = { id = "org.quiltmc.loom", version = "1.2.+" }
