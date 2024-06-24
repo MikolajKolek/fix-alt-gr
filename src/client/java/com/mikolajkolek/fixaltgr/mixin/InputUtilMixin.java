@@ -14,10 +14,8 @@ public class InputUtilMixin { //69696969696969 jubert to nooooobek
     private static void isKeyPressed(long window, int code, CallbackInfoReturnable<Boolean> cir) {
         if(code != 341) return;
 
-        if(!FixAltGrClient.listener.controlKeyPressed || FixAltGrClient.listener.altKeyPressed) {
+        if(!FixAltGrClient.listener.controlKeyPressed || FixAltGrClient.listener.altKeyPressed)
 			cir.setReturnValue(false);
-			FixAltGrClient.LOGGER.info("IT'S WORKING");
-		}
         else {
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
@@ -26,10 +24,8 @@ public class InputUtilMixin { //69696969696969 jubert to nooooobek
 				FixAltGrClient.LOGGER.error("The isKeyPressed sleep was interrupted!");
             }
 
-            if (!FixAltGrClient.listener.controlKeyPressed || FixAltGrClient.listener.altKeyPressed) {
+            if (!FixAltGrClient.listener.controlKeyPressed || FixAltGrClient.listener.altKeyPressed)
 				cir.setReturnValue(false);
-				FixAltGrClient.LOGGER.info("IT'S WORKING");
-			}
             else
                 cir.setReturnValue(true);
         }

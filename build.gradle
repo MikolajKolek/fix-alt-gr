@@ -22,7 +22,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"fixaltgr" {
+		"fix-alt-gr" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

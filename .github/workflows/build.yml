@@ -4,7 +4,13 @@
 # against bad commits.
 
 name: build
-on: [pull_request, push]
+on:
+  workflow_dispatch:
+    branches: [ "1.21" ]
+  push:
+    branches: [ "1.21" ]
+  pull_request:
+    branches: [ "1.21" ]
 
 jobs:
   build:
@@ -33,7 +39,7 @@ jobs:
       - name: build
         run: ./gradlew build
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
+        if: ${{ runner.os == 'Linux' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
