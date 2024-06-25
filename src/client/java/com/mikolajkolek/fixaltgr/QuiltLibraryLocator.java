@@ -3,7 +3,7 @@ package com.mikolajkolek.fixaltgr;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeLibraryLocator;
 import com.github.kwhat.jnativehook.NativeSystem;
-import org.quiltmc.loader.api.QuiltLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class FixAltGrLibraryLocator implements NativeLibraryLocator {
+public class QuiltLibraryLocator implements NativeLibraryLocator {
 	public static void setAaDefaultLocator() {
-		System.setProperty("jnativehook.lib.locator", FixAltGrLibraryLocator.class.getCanonicalName());
+		System.setProperty("jnativehook.lib.locator", QuiltLibraryLocator.class.getCanonicalName());
 	}
 
 	// This code is based on the JNativeHook class DefaultLibraryLocator
@@ -34,26 +34,23 @@ public class FixAltGrLibraryLocator implements NativeLibraryLocator {
 
 		String libNativeArch = NativeSystem.getArchitecture().toString().toLowerCase();
 		String libNativeName = System
-				.mapLibraryName(libName) // Get what the system "thinks" the library name should be.
-				.replaceAll("\\.jnilib$", "\\.dylib"); // Hack for OS X JRE 1.6 and earlier.
+			.mapLibraryName(libName) // Get what the system "thinks" the library name should be.
+			.replaceAll("\\.jnilib$", "\\.dylib"); // Hack for OS X JRE 1.6 and earlier.
 
 		// Resource path for the native library.
 		String libResourcePath = "/" + basePackage + "/lib/" +
-				NativeSystem.getFamily().toString().toLowerCase() +
-				'/' + libNativeArch + '/' + libNativeName;
+			NativeSystem.getFamily().toString().toLowerCase() +
+			'/' + libNativeArch + '/' + libNativeName;
 
-		String classLocation;
-		if(QuiltLoader.isDevelopmentEnvironment())
-			classLocation = GlobalScreen.class.getProtectionDomain().getCodeSource().getLocation().toString();
-		else
-			classLocation = QuiltLoader.getModContainer(FixAltGr.MODID).get().getSourcePaths().get(0).get(0).toString();
+		// classLocation change required by the Quilt Loader
+		String classLocation = FabricLoader.getInstance().getModContainer(FixAltGrClient.MODID).get().getOrigin().getPaths().get(0).toString();
 
 		File classFile;
 		try {
 			classFile = new File(new URI(classLocation));
 		}
 		catch (URISyntaxException e) {
-			FixAltGr.LOGGER.warn(e.getMessage());
+			FixAltGrClient.LOGGER.warn(e.getMessage());
 			classFile = new File(classLocation);
 		}
 
@@ -75,8 +72,8 @@ public class FixAltGrLibraryLocator implements NativeLibraryLocator {
 			}
 
 			libFile = new File(
-					libPath,
-					libNativeName.replaceAll("^(.*)\\.(.*)$", "$1" + version + '.' + libNativeArch + ".$2")
+				libPath,
+				libNativeName.replaceAll("^(.*)\\.(.*)$", "$1" + version + '.' + libNativeArch + ".$2")
 			);
 			if (!libFile.exists()) {
 				try {
@@ -98,7 +95,7 @@ public class FixAltGrLibraryLocator implements NativeLibraryLocator {
 					throw new RuntimeException(e.getMessage(), e);
 				}
 
-				FixAltGr.LOGGER.info("Extracted library: " + libFile.getPath() + ".\n");
+				FixAltGrClient.LOGGER.info("Extracted library: " + libFile.getPath() + ".\n");
 			}
 		}  else {
 			// Loose Classes
@@ -109,7 +106,7 @@ public class FixAltGrLibraryLocator implements NativeLibraryLocator {
 			throw new RuntimeException("Unable to locate JNI library at " + libFile.getPath() + "!\n");
 		}
 
-		FixAltGr.LOGGER.info("Loading library: " + libFile.getPath() + ".\n");
+		FixAltGrClient.LOGGER.info("Loading library: " + libFile.getPath() + ".\n");
 		libraries.add(libFile);
 
 		return libraries.iterator();
