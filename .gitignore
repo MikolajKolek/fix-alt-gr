@@ -1,11 +1,8 @@
 # Gradle
-../fixaltgrold/.gradle/
+.gradle/
 build/
 out/
 classes/
-
-# Quilt Loom
-run/
 
 # Eclipse
 *.launch
@@ -28,3 +25,12 @@ workspace/
 
 # macOS
 *.DS_Store
+
+# Fabric
+run/
+
+# Java
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
