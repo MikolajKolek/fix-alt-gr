@@ -18,7 +18,7 @@ public class InputUtilMixin { //69696969696969 jubert to nooooobek
 			cir.setReturnValue(false);
         else {
             try {
-                TimeUnit.MILLISECONDS.sleep(10);
+                TimeUnit.MILLISECONDS.sleep(FixAltGrClient.axiomLoaded ? 0 : 10);
             }
 			catch (InterruptedException e) {
 				FixAltGrClient.LOGGER.error("The isKeyPressed sleep was interrupted!");
