@@ -4,21 +4,23 @@ import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeLibraryLocator;
 import com.github.kwhat.jnativehook.NativeSystem;
 import net.fabricmc.loader.api.FabricLoader;
-
+import net.minecraft.client.MinecraftClient;
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class QuiltLibraryLocator implements NativeLibraryLocator {
+public class CustomLibraryLocator implements NativeLibraryLocator {
 	public static void setAaDefaultLocator() {
-		System.setProperty("jnativehook.lib.locator", QuiltLibraryLocator.class.getCanonicalName());
+		System.setProperty("jnativehook.lib.locator", CustomLibraryLocator.class.getCanonicalName());
 	}
 
 	// This code is based on the JNativeHook class DefaultLibraryLocator
@@ -42,16 +44,35 @@ public class QuiltLibraryLocator implements NativeLibraryLocator {
 			NativeSystem.getFamily().toString().toLowerCase() +
 			'/' + libNativeArch + '/' + libNativeName;
 
-		// classLocation change required by the Quilt Loader
-		String classLocation = FabricLoader.getInstance().getModContainer(FixAltGrClient.MODID).get().getOrigin().getPaths().get(0).toString();
-
 		File classFile;
-		try {
-			classFile = new File(new URI(classLocation));
-		}
-		catch (URISyntaxException e) {
-			FixAltGrClient.LOGGER.warn(e.getMessage());
+		if(StringUtils.containsIgnoreCase(MinecraftClient.getInstance().getVersionType(), "quilt")) {
+			FixAltGrClient.LOGGER.info("FixAltGr detected running on Quilt, correcting library locator...");
+
+			// classLocation change required by the Quilt Loader
+			String classLocation = FabricLoader.getInstance().getModContainer(FixAltGrClient.MODID).get().getOrigin().getPaths().get(0).toString();
+
+			try {
+				classFile = new File(new URI(classLocation));
+			}
+			catch (URISyntaxException e) {
+				FixAltGrClient.LOGGER.warn(e.toString());
+				classFile = new File(classLocation);
+			}
+		} else if(System.getProperty("java.class.path").contains("lunar.jar")) {
+			FixAltGrClient.LOGGER.info("FixAltGr detected running on Lunar, correcting library locator...");
+
+			// classFile change required by Lunar Client
+			String classLocation = FabricLoader.getInstance().getModContainer(FixAltGrClient.MODID).get().getOrigin().getPaths().get(0).toString();
 			classFile = new File(classLocation);
+		} else {
+			URL classLocation = GlobalScreen.class.getProtectionDomain().getCodeSource().getLocation();
+
+			try {
+				classFile = new File(classLocation.toURI());
+			} catch (URISyntaxException e) {
+				FixAltGrClient.LOGGER.warn(e.toString());
+				classFile = new File(classLocation.getPath());
+			}
 		}
 
 		File libFile;
